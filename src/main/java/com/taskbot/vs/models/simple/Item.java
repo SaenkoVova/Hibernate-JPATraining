@@ -1,7 +1,10 @@
 package com.taskbot.vs.models.simple;
 
 
+import com.taskbot.vs.models.advanced.MonetaryAmount;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.usertype.UserType;
@@ -39,6 +42,25 @@ public class Item {
 
 //    @Lob
 //    protected Clob description; //character large object, if type specified to Clob and not to String Hibernate will use lazy loading for this prop
+
+    //    @Type(type="yes_no") // old version
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
+    private boolean verified = false;
+
+    @Column(name = "IMPERIAL_WEIGHT")
+    @ColumnTransformer(
+            read = "IMPERIAL_WEIGHT / 2.20462",
+            write = "? * 2.20462"
+    )
+    protected double metricWeight;
+
+    @NotNull
+    @Convert(
+            converter = MonetaryAmount.class,
+            disableConversion = false
+    ) // not required annotation because of converter uses autoApply attribute in annotation
+    @Column(name = "price", length = 63)
+    private MonetaryAmount buyNowPrice;
 
     public Set<Bid> getBids() {
         return bids;
