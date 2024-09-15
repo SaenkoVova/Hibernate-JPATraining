@@ -3,7 +3,12 @@ package com.taskbot.vs.models.simple;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
+import org.hibernate.usertype.UserType;
 
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,12 +31,37 @@ public class Item {
 
     protected Set<Bid> bids = new HashSet<>();
 
+    @Lob
+    protected Blob image; // The disadvantage is that the object model will be related to jdbc
+
+    @Lob
+    protected String description;
+
+//    @Lob
+//    protected Clob description; //character large object, if type specified to Clob and not to String Hibernate will use lazy loading for this prop
+
     public Set<Bid> getBids() {
         return bids;
     }
 
     public void setBids(Set<Bid> bids) {
         this.bids = bids;
+    }
+
+    public Blob getImage() {
+        return image;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void addBid(Bid bid) {
