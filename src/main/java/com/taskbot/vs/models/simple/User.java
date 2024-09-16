@@ -1,5 +1,6 @@
 package com.taskbot.vs.models.simple;
 
+import com.taskbot.vs.converter.ZipcodeConverter;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -21,6 +22,12 @@ public class User implements Serializable {
             @AttributeOverride(name = "city", column = @Column(name = "BILLING_CITY")),
     })
     private Address billingAddress;
+
+    @Convert(
+            converter = ZipcodeConverter.class,
+            attributeName = "zipcode"
+    )
+    private Address homeAddress;
 
     public User() {
     }
