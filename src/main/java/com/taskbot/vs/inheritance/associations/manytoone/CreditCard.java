@@ -1,7 +1,6 @@
 package com.taskbot.vs.inheritance.associations.manytoone;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 @Entity
 public class CreditCard extends BillingDetails {
